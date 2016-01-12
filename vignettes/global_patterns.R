@@ -7,18 +7,9 @@
 library("phyloseq")
 library("plyr")
 library("dplyr")
+library("microMulti")
 library("mvarVis")
 library("RCurl")
-
-## ---- utils ----
-supp_annotation <- function(mvar_object, phyloseq_object, n1 = "species",
-                            n2 = "site") {
-  mvar_object@table[[n1]]@annotation <- data.frame(mvar_object@table[[n1]]@annotation,
-                                                   phyloseq_object@tax_table)
-  mvar_object@table[[n2]]@annotation <- data.frame(mvar_object@table[[n2]]@annotation,
-                                                   phyloseq_object@sam_data)
-  mvar_object
-}
 
 ## ---- get-data ----
 data_path <- file.path(tempdir(), "microbiomeData.RData")
@@ -51,7 +42,7 @@ plot_mvar_d3(gp_pca_mvar, c("point", "arrow"), height = 500)
 # multitable methods
 ################################################################################
 
-## ---- cca ----
+## ---- correspondence ----
 gp_cca <- ordinate(global_patterns, formula = GP1 ~ ., , method = "CCA")
 gp_cca_mvar <- convert_to_mvar(gp_cca)
 plot_mvar_d3(gp_cca_mvar, c("arrow", "point"), height = 500)
