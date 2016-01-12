@@ -46,3 +46,12 @@ hist(log(X), 100)
 gp_pca <- ordi(scale(log(1 + X)), method = "ade4_pca", scannf = F, nf = 10)
 gp_pca_mvar <- supp_annotation(gp_pca, global_patterns, "li", "co")
 plot_mvar_d3(gp_pca_mvar, c("point", "arrow"), height = 500)
+
+################################################################################
+# multitable methods
+################################################################################
+
+## ---- cca ----
+gp_cca <- ordinate(global_patterns, formula = GP1 ~ ., , method = "CCA")
+gp_cca_mvar <- convert_to_mvar(gp_cca)
+plot_mvar_d3(gp_cca_mvar, c("arrow", "point"), height = 500)
