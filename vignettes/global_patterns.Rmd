@@ -1,0 +1,30 @@
+---
+title: "Global Patterns"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{global_patterns}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = F}
+library("knitr")
+library("ggplot2")
+read_chunk("global_patterns.R")
+theme_set(theme_bw())
+```
+
+## Overview
+
+This vignette surveys different views of the global patterns data set
+(included in `phyloseq`, also accessible from this
+[link](https://drive.google.com/drive/folders/0B1PAaDUXYBkOVExqRmNCR0JBZlU)),
+using different ordination methods.
+
+## Single Table
+
+```{r}
+```
+
+## Multitable
