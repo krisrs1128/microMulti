@@ -1,0 +1,11 @@
+Package: microMulti
+Title: Multitable Methods for the Microbiome.
+Version: 0.0.0.9000
+Authors@R: person("Kris", "Sankaran", email = "krissankaran@stanford.edu", role = c("aut", "cre"))
+Description: A survey of multitable methods for microbiome data analysis.
+Depends: R (>= 3.2.1)
+License: What license is it under?
+LazyData: true
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
