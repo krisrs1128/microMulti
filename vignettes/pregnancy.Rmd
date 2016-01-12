@@ -1,0 +1,15 @@
+---
+title: "Pregnancy Data Set"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pregnancy}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library("knitr")
+opts_chunk$set(fig.width = 8, fig.height = 5, warning = FALSE)
+read_chunk("pregnancy.Rmd")
+```
