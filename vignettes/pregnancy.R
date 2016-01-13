@@ -5,6 +5,7 @@
 
 ## ---- libraries ----
 library("caret")
+library("gflasso")
 library("phyloseq")
 library("plyr")
 library("dplyr")
@@ -48,4 +49,10 @@ sorted_vars <- impt %>%
   select(id) %>% unlist()
 preg@tax_table[sorted_vars[1:10], 4:7] # top ten most predictive species
 
-## ---- KCCA ----
+## ---- multitask-model ----
+Y <- data.frame(sample_data(preg))[, c("Marginal", "Preterm")]
+table(Y)
+Y <- colwise(as.numeric)(Y)
+# Not really applicable, since response is binary
+gflasso(Y, X, matrix(c(1, .1, .1, 1), 2, 2),
+        list(lambda = .05, delta_conv = 1e-4))
