@@ -25,11 +25,11 @@ gp_dca_mvar <- supp_annotation(gp_dca_mvar, global_patterns)
 plot_mvar_d3(gp_dca_mvar, c("arrow", "point"), height = 800)
 
 ## ---- PCA ----
-gp_pca <- ordi(global_patterns@otu_table, method = "ade4_pca")
+gp_pca <- ordi(global_patterns@otu_table, method = "ade4_pca", scannf = F, nf = 5)
 gp_pca_mvar <- supp_annotation(gp_pca, global_patterns, "li", "co")
 plot_mvar_d3(gp_pca_mvar, c("point", "arrow"), height = 500)
 
-## ---- preproces-pca ----
+## ---- preprocess-pca ----
 X <- otu_table(global_patterns)@.Data
 hist(log(1 + X), 100)
 hist(log(X), 100)

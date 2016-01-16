@@ -8,8 +8,40 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## Setup
+
 ```{r}
 library("knitr")
 opts_chunk$set(fig.width = 8, fig.height = 5, warning = FALSE)
-read_chunk("pregnancy.Rmd")
+read_chunk("pregnancy.R")
+```
+
+```{r, libraries}
+```
+
+```{r, get-data}
+```
+
+## Processing
+
+```{r, prelim}
+```
+
+## Single Table
+
+MDS.
+
+```{r, MDS}
+```
+
+## Multitable
+
+Glmnet.
+
+```{r, glmnet}
+```
+
+Graph fused lasso.
+
+```{r, multitask-model}
 ```

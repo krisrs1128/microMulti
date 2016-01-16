@@ -22,9 +22,24 @@ This vignette surveys different views of the global patterns data set
 [link](https://drive.google.com/drive/folders/0B1PAaDUXYBkOVExqRmNCR0JBZlU)),
 using different ordination methods.
 
+```{r, libraries}
+```
+
+```{r, get-data}
+```
+
 ## Single Table
 
-```{r}
+```{r, DCA}
+```
+
+```{r, PCA}
+```
+
+```{r, preprocess-pca}
 ```
 
 ## Multitable
+
+```{r, correspondence}
+```
