@@ -13,6 +13,8 @@ library("microMulti")
 library("mvarVis")
 library("RCurl")
 library("data.table")
+library("ggplot2")
+theme_set(theme_bw())
 
 ## ---- get-data ----
 data_path <- file.path(tempdir(), "microbiomeData.RData")
@@ -22,14 +24,20 @@ preg <- get(load(data_path))$pregnancy$PSPost$Vaginal_Swab
 preg
 
 ## ---- prelim ----
-otu_table(preg) <- transform_sample_counts(otu_table(preg), function(OTU) OTU/sum(OTU))
+raw_otu <- otu_table(preg)
+p_otu <- transform_sample_counts(otu_table(preg), function(OTU) OTU/sum(OTU))
 
 ## ---- MDS ----
 # this is in the paper (they color everything by a k-medoids clustering, though)
-braydist <- phyloseq::distance(otu_table(preg), method="bray")
-ord <- ordinate(otu_table(preg), method = "MDS", distance = braydist)
+braydist <- phyloseq::distance(p_otu, method="bray")
+ord <- ordinate(p_otu, method = "MDS", distance = braydist)
 plot_ordination(preg, ord, col = "Preterm")
 rm(ord, braydist)
+
+## ---- filter-otus ----
+keep <- genefilter_sample(raw_otu, filterfun_sample(function(x) x > 0),
+                          A = 0.1 * nsamples(preg))
+raw_otu <- raw_otu[, keep]
 
 ## ---- get-dates ----
 master <- sample_data(preg)@.Data %>%
@@ -49,14 +57,17 @@ diff_dates <- function(x) {
     as.numeric()
 }
 
-## ---- functional-pca ----
-
+## ---- ts-plots ----
+for(j in seq_len(ncol(raw_otu))) {
+  X <- data.table(master, raw_otu[, j])
+  mX <- melt(X, id.vars = colnames(master))
+  print(ggplot(mX) +
+    geom_point(aes(x = relative_day, y = value, col = SubjectNice), alpha = 0.3, size = 1) +
+    geom_line(aes(x = relative_day, y = value, col = SubjectNice), alpha = 0.2))
+  Sys.sleep(.4)
+}
 
 ## ---- glmnet ----
-keep <- genefilter_sample(otu_table(preg), filterfun_sample(function(x) x > 0),
-                          A = 0.25 * nsamples(preg))
-otu_table(preg) <- otu_table(preg)[, keep]
-
 y <- as.factor(sample_data(preg)$Preterm)
 #sample_pred_X <- sample_data(preg)[, c()] # don't use obviously correlated variables
 #X <- cbind(otu_table(preg)@.Data, sample_pred_X)
