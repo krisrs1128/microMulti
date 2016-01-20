@@ -12,6 +12,7 @@ library("dplyr")
 library("microMulti")
 library("mvarVis")
 library("RCurl")
+library("data.table")
 
 ## ---- get-data ----
 data_path <- file.path(tempdir(), "microbiomeData.RData")
@@ -28,7 +29,28 @@ otu_table(preg) <- transform_sample_counts(otu_table(preg), function(OTU) OTU/su
 braydist <- phyloseq::distance(otu_table(preg), method="bray")
 ord <- ordinate(otu_table(preg), method = "MDS", distance = braydist)
 plot_ordination(preg, ord, col = "Preterm")
-rm(list(ord, braydist))
+rm(ord, braydist)
+
+## ---- get-dates ----
+master <- sample_data(preg)@.Data %>%
+  as.data.frame() %>%
+  as.data.table()
+setnames(master, colnames(sample_data(preg)))
+master <- master %>%
+  group_by(SubjectID) %>%
+  mutate(relative_day = diff_dates(DateColl))
+master %>%
+  select(SubjectID, relative_day, DateColl) %>%
+  arrange(SubjectID, relative_day)
+
+diff_dates <- function(x) {
+  dates <- strptime(x, "%m/%d/%y %H:%M")
+  difftime(dates, min(dates), units = "days") %>%
+    as.numeric()
+}
+
+## ---- functional-pca ----
+
 
 ## ---- glmnet ----
 keep <- genefilter_sample(otu_table(preg), filterfun_sample(function(x) x > 0),
